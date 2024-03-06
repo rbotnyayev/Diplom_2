@@ -7,7 +7,7 @@ public class UserClient extends BaseHttpClient {
 
     private final String CREATE_USER_ENDPOINT = "api/auth/register";
     private final String LOGIN_USER_ENDPOINT = "api/auth/login";
-    private static final String USER_CHANGE_ENDPOINT = "/api/auth/user";
+    private static final String USER_CHANGE_ENDPOINT = "api/auth/user";
 
 
     @Step("Создание уникального пользователя")
@@ -16,13 +16,13 @@ public class UserClient extends BaseHttpClient {
     }
 
     @Step("Логин существуюшего пользователя")
-    public Response existUserLogin(User user){
+    public Response userLogin(User user){
         return doPostRequest(LOGIN_USER_ENDPOINT, user);
     }
 
     @Step("Получение токена")
     public String getToken(User user){
-        return existUserLogin(user)
+        return userLogin(user)
                 .then()
                 .extract()
                 .path("accessToken");
