@@ -1,3 +1,5 @@
+package client;
+
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.ErrorLoggingFilter;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -6,6 +8,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.requestSpecification;
 
 public class BaseHttpClient {
 
@@ -32,5 +35,27 @@ public class BaseHttpClient {
                 .spec(baseRequestSpec())
                 .body(body)
                 .post(path);
+    }
+
+    protected Response doPatchRequest(String path, Object body){
+        return given().log().all()
+                .spec(baseRequestSpec())
+                .body(body)
+                .patch(path);
+    }
+    protected Response doPatchRequestWithToken(String path, String token, Object body){
+        return given().log().all()
+                .spec(baseRequestSpec())
+                .header("authorization", token)
+                .body(body)
+                .patch(path);
+    }
+
+    protected Response doDeleteRequest(String path, String accessToken){
+        return given()
+                .spec(baseRequestSpec())
+                .header("authorization", accessToken)
+                .when()
+                .delete(path);
     }
 }
