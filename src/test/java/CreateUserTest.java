@@ -2,7 +2,6 @@ import client.UserClient;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import model.User;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -80,10 +79,5 @@ public class CreateUserTest {
                 .statusCode(SC_FORBIDDEN)
                 .and().assertThat().body("success", equalTo(false))
                 .and().assertThat().body("message", equalTo("Email, password and name are required fields"));
-    }
-
-    @After
-    public void deleteUser(){
-        client.deleteUser(client.getToken(user));
     }
 }

@@ -19,13 +19,13 @@ public class LoginUserTest {
     public void setUp(){
         user = User.createRandomUser();
         client = new UserClient();
+        client.createUser(user);
     }
 
     @Test
     @DisplayName("Авторизация пользователя")
     @Description("Авторизация пользователя под существующем логином")
     public void authorizationTest() {
-        client.createUser(user);
         client.userLogin(user)
                 .then().log().all()
                 .statusCode(SC_OK)

@@ -23,27 +23,27 @@ public class BaseHttpClient {
     }
 
     protected Response doGetRequest(String path){
-        return given()
+        return given().log().all()
                 .spec(baseRequestSpec())
                 .get(path);
     }
 
     protected Response doGetRequestWithToken(String path, String token){
-        return given()
+        return given().log().all()
                 .spec(baseRequestSpec())
                 .header("authorization", token)
                 .get(path);
     }
 
     protected Response doPostRequest(String path, Object body){
-        return given()
+        return given().log().all()
                 .spec(baseRequestSpec())
                 .body(body)
                 .post(path);
     }
 
     protected Response doPostRequestWithToken(String path, String token, Object body){
-        return given()
+        return given().log().all()
                 .spec(baseRequestSpec())
                 .header("authorization", token)
                 .body(body)
@@ -51,13 +51,13 @@ public class BaseHttpClient {
     }
 
     protected Response doPatchRequest(String path, Object body){
-        return given()
+        return given().log().all()
                 .spec(baseRequestSpec())
                 .body(body)
                 .patch(path);
     }
     protected Response doPatchRequestWithToken(String path, String token, Object body){
-        return given()
+        return given().log().all()
                 .spec(baseRequestSpec())
                 .header("authorization", token)
                 .body(body)
@@ -65,7 +65,7 @@ public class BaseHttpClient {
     }
 
     protected Response doDeleteRequest(String path, String accessToken){
-        return given()
+        return given().log().all()
                 .spec(baseRequestSpec())
                 .header("authorization", accessToken)
                 .when()

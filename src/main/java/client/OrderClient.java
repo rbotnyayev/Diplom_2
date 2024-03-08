@@ -5,8 +5,6 @@ import io.restassured.response.Response;
 import model.Ingredients;
 import model.Order;
 
-import static io.restassured.RestAssured.given;
-
 public class OrderClient extends BaseHttpClient {
     private static final String ORDERS_ENDPOINT = "api/orders";
     private static final String INGREDIENTS_ENDPOINT = "api/ingredients";

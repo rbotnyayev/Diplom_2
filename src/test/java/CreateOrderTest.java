@@ -5,6 +5,7 @@ import io.qameta.allure.junit4.DisplayName;
 import model.Ingredients;
 import model.Order;
 import model.User;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -86,5 +87,12 @@ public class CreateOrderTest {
         ingredient.add(ingredients.getData().get(2).get_id() + "5");
         orderClient.createOrderWithAuth(accessToken, order)
                 .then().statusCode(SC_INTERNAL_SERVER_ERROR);
+    }
+
+    @After
+    public void deleteUser(){
+        if(accessToken != null){
+            userClient.deleteUser(accessToken);
+        }
     }
 }
