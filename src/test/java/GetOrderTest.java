@@ -23,7 +23,7 @@ public class GetOrderTest {
         accessToken = userClient.getToken(user);
         orderClient.getOrderListWithAuth(accessToken)
                 .then().statusCode(SC_OK)
-                .and().body("success", equalTo(true))
+                .and().body("success", equalTo(true));
     }
 
     @Test
