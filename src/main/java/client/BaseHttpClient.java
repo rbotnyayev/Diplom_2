@@ -11,7 +11,7 @@ import static io.restassured.RestAssured.given;
 
 public class BaseHttpClient {
 
-    private RequestSpecification baseRequestSpec(){
+    public RequestSpecification baseRequestSpec(){
         return new RequestSpecBuilder()
                 .setBaseUri("https://stellarburgers.nomoreparties.site/")
                 .addHeader("Content-type", "application/json")
@@ -25,25 +25,39 @@ public class BaseHttpClient {
     protected Response doGetRequest(String path){
         return given()
                 .spec(baseRequestSpec())
-                .get(path)
-                .thenReturn();
+                .get(path);
+    }
+
+    protected Response doGetRequestWithToken(String path, String token){
+        return given()
+                .spec(baseRequestSpec())
+                .header("authorization", token)
+                .get(path);
     }
 
     protected Response doPostRequest(String path, Object body){
-        return given().log().all()
+        return given()
                 .spec(baseRequestSpec())
                 .body(body)
                 .post(path);
     }
 
+    protected Response doPostRequestWithToken(String path, String token, Object body){
+        return given()
+                .spec(baseRequestSpec())
+                .header("authorization", token)
+                .body(body)
+                .post(path);
+    }
+
     protected Response doPatchRequest(String path, Object body){
-        return given().log().all()
+        return given()
                 .spec(baseRequestSpec())
                 .body(body)
                 .patch(path);
     }
     protected Response doPatchRequestWithToken(String path, String token, Object body){
-        return given().log().all()
+        return given()
                 .spec(baseRequestSpec())
                 .header("authorization", token)
                 .body(body)

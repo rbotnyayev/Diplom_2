@@ -2,6 +2,7 @@ import client.UserClient;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import model.User;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,5 +66,10 @@ public class LoginUserTest {
                 .statusCode(SC_UNAUTHORIZED)
                 .and().body("success", equalTo(false))
                 .and().body("message", equalTo("email or password are incorrect"));
+    }
+
+    @After
+    public void deleteUser(){
+        client.deleteUser(client.getToken(user));
     }
 }

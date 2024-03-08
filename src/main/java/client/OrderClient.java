@@ -1,7 +1,40 @@
 package client;
 
-public class OrderClient {
-    private static final String USER_REGISTRATION_ENDPOINT = "/api/auth/register";
-    private static final String USER_LOGIN_ENDPOINT = "/api/auth/login";
-    private static final String USER_CHANGE_ENDPOINT = "/api/auth/user";
+import io.qameta.allure.Step;
+import io.restassured.response.Response;
+import model.Ingredients;
+import model.Order;
+
+import static io.restassured.RestAssured.given;
+
+public class OrderClient extends BaseHttpClient {
+    private static final String ORDERS_ENDPOINT = "api/orders";
+    private static final String INGREDIENTS_ENDPOINT = "api/ingredients";
+
+    @Step("Создание заказа с авторизацией и ингредиентами")
+    public Response createOrderWithAuth(String token, Order order){
+        return doPostRequestWithToken(ORDERS_ENDPOINT, token, order);
+    }
+
+    @Step("Получение данных об ингредиентах")
+    public Ingredients getIngredientsData(){
+        return doGetRequest(INGREDIENTS_ENDPOINT).body().as(Ingredients.class);
+    }
+
+    @Step("Создание заказа без авторизации")
+    public Response createOrderWithoutAuth(Order order){
+        return doPostRequest(ORDERS_ENDPOINT, order);
+    }
+
+    @Step("Получение списка заказов после авторизации")
+    public Response getOrderListWithAuth(String token){
+        return doGetRequestWithToken(ORDERS_ENDPOINT, token);
+    }
+
+    @Step("Получение списка заказов без авторизации")
+    public Response getOrderListWithoutAuth(){
+        return doGetRequest(ORDERS_ENDPOINT);
+    }
+
+
 }
