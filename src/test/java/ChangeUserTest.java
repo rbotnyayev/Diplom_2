@@ -32,7 +32,7 @@ public class ChangeUserTest {
                 .then().log().all()
                 .statusCode(SC_OK)
                 .and().body("success", equalTo(true))
-                .and().body("user.email", equalTo(newEmail));
+                .and().body("user.email", equalTo(newEmail.toLowerCase()));
     }
 
     @Test
@@ -108,6 +108,8 @@ public class ChangeUserTest {
 
     @After
     public void deleteUser(){
-        client.deleteUser(client.getToken(user));
+        if(accessToken != null){
+            client.deleteUser(accessToken);
+        }
     }
 }

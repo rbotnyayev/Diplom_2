@@ -14,12 +14,14 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class LoginUserTest {
     User user;
     UserClient client;
+    String accessToken;
 
     @Before
     public void setUp(){
         user = User.createRandomUser();
         client = new UserClient();
         client.createUser(user);
+        accessToken = client.getToken(user);
     }
 
     @Test
@@ -37,7 +39,7 @@ public class LoginUserTest {
     @DisplayName("Авторизация пользователя с некорректным логином")
     @Description("Попытка авторизации пользователя с несуществующим логином")
     public void authorizationWithIncorrectLoginTest() {
-        user = new User("edfsfsewwd", this.user.getPassword(), this.user.getName());
+        user = new User("bad" + this.user.getEmail(), this.user.getPassword(), this.user.getName());
         client.userLogin(user)
                 .then().log().all()
                 .statusCode(SC_UNAUTHORIZED)
@@ -49,7 +51,7 @@ public class LoginUserTest {
     @DisplayName("Авторизация пользователя с некорректным паролем")
     @Description("Попытка авторизации пользователя с несуществующим паролем")
     public void authorizationWithIncorrectPasswordTest() {
-        user = new User(this.user.getEmail(), "gsddfscv5", this.user.getName());
+        user = new User(this.user.getEmail(), "bad"+this.user.getPassword(), this.user.getName());
         client.userLogin(user)
                 .then().log().all()
                 .statusCode(SC_UNAUTHORIZED)
@@ -70,6 +72,8 @@ public class LoginUserTest {
 
     @After
     public void deleteUser(){
-        client.deleteUser(client.getToken(user));
+        if(accessToken != null){
+            client.deleteUser(accessToken);
+        }
     }
 }

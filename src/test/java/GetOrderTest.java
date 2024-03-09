@@ -3,6 +3,7 @@ import client.UserClient;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import model.User;
+import org.junit.After;
 import org.junit.Test;
 
 import static org.apache.http.HttpStatus.SC_OK;
@@ -33,5 +34,12 @@ public class GetOrderTest {
         orderClient.getOrderListWithoutAuth()
                 .then().statusCode(SC_UNAUTHORIZED)
                 .and().body("success", equalTo(false));
+    }
+
+    @After
+    public void deleteUser(){
+        if(accessToken != null){
+            userClient.deleteUser(accessToken);
+        }
     }
 }

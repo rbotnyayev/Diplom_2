@@ -2,6 +2,7 @@ import client.UserClient;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import model.User;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +13,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 public class CreateUserTest {
     User user;
     UserClient client;
+
+    String accessToken;
 
     @Before
     public void setUp(){
@@ -31,6 +34,7 @@ public class CreateUserTest {
                 .and().body("refreshToken", notNullValue())
                 .and().body("user.email", notNullValue())
                 .and().body("user.name", notNullValue());
+        accessToken = client.getToken(user);
     }
 
     @Test
@@ -42,7 +46,8 @@ public class CreateUserTest {
                 .then()
                 .statusCode(SC_FORBIDDEN)
                 .and().assertThat().body("success", equalTo(false))
-                .and().assertThat().body("message", equalTo("model.User already exists"));
+                .and().assertThat().body("message", equalTo("User already exists"));
+        accessToken = client.getToken(user);
     }
 
     @Test
@@ -79,5 +84,12 @@ public class CreateUserTest {
                 .statusCode(SC_FORBIDDEN)
                 .and().assertThat().body("success", equalTo(false))
                 .and().assertThat().body("message", equalTo("Email, password and name are required fields"));
+    }
+
+    @After
+    public void deleteUser(){
+        if(accessToken != null){
+            client.deleteUser(accessToken);
+        }
     }
 }
